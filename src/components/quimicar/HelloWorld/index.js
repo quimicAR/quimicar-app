@@ -7,7 +7,7 @@ import {
   ViroARSceneNavigator,
 } from '@viro-community/react-viro';
 
-class HelloWorldSceneAR extends Component {
+class HelloScene extends Component {
   constructor(props) {
     super(props);
     // Set initial state here
@@ -16,6 +16,16 @@ class HelloWorldSceneAR extends Component {
     };
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this);
+  }
+
+  _onInitialized(state, reason) {
+    if (state === ViroConstants.TRACKING_NORMAL) {
+      this.setState({
+        text: 'Hello World!',
+      });
+    } else if (state === ViroConstants.TRACKING_NONE) {
+      // Handle loss of tracking
+    }
   }
 
   render() {
@@ -30,19 +40,24 @@ class HelloWorldSceneAR extends Component {
       </ViroARScene>
     );
   }
+}
 
-  _onInitialized(state, reason) {
-    if (state == ViroConstants.TRACKING_NORMAL) {
-      this.setState({
-        text: 'Hello World!',
-      });
-    } else if (state == ViroConstants.TRACKING_NONE) {
-      // Handle loss of tracking
-    }
+export default class HelloWorldSceneAR extends Component {
+  render() {
+    return (
+      <ViroARSceneNavigator
+        autofocus={true}
+        initialScene={{
+          scene: HelloScene,
+        }}
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{flex: 1}}
+      />
+    );
   }
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Arial',
     fontSize: 30,
@@ -51,17 +66,3 @@ var styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-export default class App extends React.Component {
-  render() {
-    return (
-      <ViroARSceneNavigator
-        autofocus={true}
-        initialScene={{
-          scene: HelloWorldSceneAR,
-        }}
-        style={{flex: 1}}
-      />
-    );
-  }
-}
