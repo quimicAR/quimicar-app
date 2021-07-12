@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+// import {StyleSheet} from 'react-native';
 import {
   ViroARScene,
-  ViroText,
-  ViroConstants,
+  ViroAmbientLight,
+  Viro3DObject,
   ViroARSceneNavigator,
+  ViroConstants
 } from '@viro-community/react-viro';
 
 class HelloScene extends Component {
@@ -31,12 +32,17 @@ class HelloScene extends Component {
   render() {
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
-        <ViroText
-          text={this.state.text}
-          scale={[0.5, 0.5, 0.5]}
-          position={[0, 0, -1]}
-          style={styles.helloWorldTextStyle}
-        />
+        {/* Objects need lights to be visible! */}
+        <ViroAmbientLight color="#ffffff" />
+          
+        <Viro3DObject
+          source={require("../../../resources/atom.obj")}
+          highAccuracyEvents={true}
+          position={[1, 3, -5]}
+          scale={[2, 2, 2]}
+          rotation={[45, 0, 0]}
+          type="OBJ"
+          transformBehaviors={["billboard"]}/>
       </ViroARScene>
     );
   }
@@ -57,12 +63,12 @@ export default class HelloWorldSceneAR extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   helloWorldTextStyle: {
+//     fontFamily: 'Arial',
+//     fontSize: 30,
+//     color: '#ffffff',
+//     textAlignVertical: 'center',
+//     textAlign: 'center',
+//   },
+// });
