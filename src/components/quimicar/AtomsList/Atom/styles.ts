@@ -11,7 +11,7 @@ export const AtomSymbol = styled(View)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #a1d344;
+  background-color: #a1d344; 
   padding: 5px;
   width: 60px;
   height: 60px;
