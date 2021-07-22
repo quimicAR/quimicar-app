@@ -2,11 +2,15 @@ import React, {Component} from 'react';
 // import {StyleSheet} from 'react-native';
 import {
   ViroARScene,
-  ViroAmbientLight,
-  Viro3DObject,
+  ViroSphere,
+  ViroText,
   ViroARSceneNavigator,
-  ViroConstants
+  ViroConstants,
+  ViroARImageMarker,
+  ViroARTrackingTargets,
+  ViroMaterials
 } from '@viro-community/react-viro';
+
 
 class HelloScene extends Component {
   constructor(props) {
@@ -28,21 +32,20 @@ class HelloScene extends Component {
       // Handle loss of tracking
     }
   }
-
+ 
+  
   render() {
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
-        {/* Objects need lights to be visible! */}
-        <ViroAmbientLight color="#ffffff" />
-          
-        <Viro3DObject
-          source={require("../../../resources/atom.obj")}
-          highAccuracyEvents={true}
-          position={[1, 3, -5]}
-          scale={[2, 2, 2]}
-          rotation={[45, 0, 0]}
-          type="OBJ"
-          transformBehaviors={["billboard"]}/>
+        <ViroARImageMarker target={"targetOne"} >
+          <ViroSphere position={[0,0,0]} scale={[.05, .05, .05]} opacity={0.3} />
+          <ViroText
+              text="AR é meu saco"
+              color="#ff0000"
+              width={2} height={2}
+              position={[.02,.03,0]}
+          />
+        </ViroARImageMarker>  
       </ViroARScene>
     );
   }
@@ -63,12 +66,17 @@ export default class HelloWorldSceneAR extends Component {
   }
 }
 
-// const styles = StyleSheet.create({
-//   helloWorldTextStyle: {
-//     fontFamily: 'Arial',
-//     fontSize: 30,
-//     color: '#ffffff',
-//     textAlignVertical: 'center',
-//     textAlign: 'center',
-//   },
-// });
+ViroMaterials.createMaterials({
+  atom: {
+     lightingModel: "Lambert",
+   },
+});
+
+ViroARTrackingTargets.createTargets({
+  "targetOne" : {
+    source : require('./res/hiro.png'),
+    orientation : "Up",
+    physicalWidth : 0.1 // real world width in meters
+  },
+});
+
