@@ -6,18 +6,16 @@ import {Atom} from './Atom';
 import AtomI from '../../../interfaces/atom';
 import {AtomListContainer} from './styles';
 import HelloWorldSceneAR from '../HelloWorld';
-import {useNavigation} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native';
 
 export const AtomsList: React.FC = () => {
   const [atomsData, setAtomsData] = useState<any[]>([]);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const fetchData = async (): Promise<void> => {
     const resp = await fetch('https://periodic-table-api.herokuapp.com/');
     const data = await resp.json();
     setAtomsData(data);
   };
-
-
 
   useEffect(() => {
     fetchData();
@@ -27,7 +25,9 @@ export const AtomsList: React.FC = () => {
     <AtomListContainer>
       <FlatList<AtomI>
         data={atomsData}
-        renderItem={({item}) => <Atom openAR={() => navigation.navigate('Atom')} data={item} />}
+        renderItem={({item}) => (
+          <Atom openAR={() => navigation.navigate('Atom')} data={item} />
+        )}
         keyExtractor={({atomicNumber}) => atomicNumber}
         extraData={atomsData}
         removeClippedSubviews
