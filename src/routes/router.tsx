@@ -5,8 +5,8 @@ import {enableScreens} from 'react-native-screens';
 import {NavigationContainer, DarkTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import HomeScreen from '../screens/HomeScreen';
+import ARNavigator from '../screens/ARNavigator';
 import {NativeBaseProvider, StatusBar} from 'native-base';
-import HelloWorldSceneAR from '../components/quimicar/HelloWorld';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -50,7 +50,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="quimicAR" component={HomeScreen} />
           <Stack.Screen
             name="Atom"
-            component={HelloWorldSceneAR}
+            component={ARNavigator}
             options={{
               gestureEnabled: true,
             }}
