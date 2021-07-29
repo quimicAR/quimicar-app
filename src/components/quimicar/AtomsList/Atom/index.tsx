@@ -3,11 +3,10 @@ import React from 'react';
 import {Box, Text} from 'native-base';
 import {AtomContainer, AtomSymbol} from './styles';
 import AtomI from '../../../../interfaces/atom';
-import HelloWorldSceneAR from '../../HelloWorld';
 
 interface AtomProps {
   data: AtomI;
-  openAR: any;
+  openAR: () => void;
 }
 
 export const Atom: React.FC<AtomProps> = ({data, openAR}: AtomProps) => {
