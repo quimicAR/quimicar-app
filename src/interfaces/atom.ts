@@ -1,4 +1,4 @@
-export default interface AtomI {
+export default interface IAtom {
   atomicMass: string;
   atomicNumber: string;
   atomicRadius: string;
