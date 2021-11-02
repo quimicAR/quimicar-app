@@ -22,6 +22,10 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'off', // Turn off normal prettier
-    // Any rules you want to add/turn off come here...
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/consistent-type-definitions': 'off',
+    'react-native/no-inline-styles': 'off',
   },
 };
