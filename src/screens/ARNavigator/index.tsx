@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ViroARSceneNavigator} from '@viro-community/react-viro';
-import {RouteProp, useRoute} from '@react-navigation/native';
+import {RouteProp, useRoute, useNavigation} from '@react-navigation/native';
 import {IAtom} from '../../interfaces';
 import AtomScene from '../AtomScene';
 
@@ -14,16 +12,21 @@ type ParamsList = {
 
 export default function ARNavigator(): JSX.Element {
   const route = useRoute<RouteProp<ParamsList, 'ARNavigator'>>();
+  const navigation = useNavigation();
 
   const {atomData} = route.params;
-  console.log(atomData.name);
+
+  useEffect(() => {
+    navigation.setOptions({title: atomData.name});
+  }, [atomData.name, navigation]);
+
   return (
     <ViroARSceneNavigator
       autofocus={true}
       initialScene={{
         scene: () => <AtomScene atom={atomData} />,
       }}
-      // eslint-disable-next-line react-native/no-inline-styles
+      key={atomData.number}
       style={{flex: 1}}
     />
   );
