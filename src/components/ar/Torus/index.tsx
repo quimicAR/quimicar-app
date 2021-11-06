@@ -1,21 +1,30 @@
 import React from 'react';
 import {Viro3DObject} from '@viro-community/react-viro';
-
+import {buildObjPath, buildResourcePath} from '../../../config/viro-ar';
 interface ITorusProps {
   scale: number[];
+  animation?: any;
+  numberOfEletrons: number;
+  rotation?: number[];
 }
 
-const Torus = ({scale}: ITorusProps): JSX.Element => {
+const TorusAR = ({
+  scale,
+  animation,
+  numberOfEletrons,
+  rotation,
+}: ITorusProps): JSX.Element => {
   return (
     <Viro3DObject
-      source={require('./res/torus-base.obj')}
-      resources={[require('./res/torus-base.mtl')]}
+      source={buildObjPath(numberOfEletrons)}
+      resources={[buildResourcePath(numberOfEletrons)]}
       position={[0, 0, 0]}
       scale={scale}
-      rotation={[90, 0, 0]}
+      rotation={rotation}
       type="OBJ"
+      animation={animation}
     />
   );
 };
 
-export default Torus;
+export default TorusAR;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ViroSphere, ViroMaterials} from '@viro-community/react-viro';
+import {ViroSphere} from '@viro-community/react-viro';
 
 interface ISphereProps {
   position?: number[];
@@ -26,24 +26,13 @@ const Sphere = ({
       rotation={rotation}
       animation={animation}
       dragType="FixedToWorld"
+      physicsBody={{
+        type: 'Static',
+        mass: 0,
+        shape: {type: 'Sphere', params: [0.5]},
+      }}
     />
   );
 };
-
-ViroMaterials.createMaterials({
-  atom: {
-    lightingModel: 'Lambert',
-    diffuseColor: 'rgb(0,0,0)',
-  },
-  proton: {
-    diffuseColor: 'rgb(20,115,230)',
-  },
-  neutron: {
-    diffuseColor: 'rgb(252,194,22)',
-  },
-  electron: {
-    diffuseColor: 'rgb(232,80,62)',
-  },
-});
 
 export default Sphere;
