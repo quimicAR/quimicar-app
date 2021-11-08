@@ -1,3 +1,4 @@
-import {IBaseParticle} from './';
-
-export default interface IEletron extends IBaseParticle {}
+export default interface IEletron {
+  id: number;
+  position: number[];
+}
