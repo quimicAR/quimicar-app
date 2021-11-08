@@ -6,7 +6,21 @@ import {NavigationContainer, DarkTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import ARNavigator from '../screens/ARNavigator';
-import {NativeBaseProvider, StatusBar} from 'native-base';
+import {Box, NativeBaseProvider, StatusBar, Text} from 'native-base';
+import AtomLogo from '../assets/atom-dark.svg';
+
+const LogoTitle = () => {
+  return (
+    <Text textAlign="center">
+      <Box flexDirection="row" alignItems="center">
+        <AtomLogo width="25px" height="25px" />
+        <Text marginLeft="3" fontSize="md">
+          quimicAR
+        </Text>
+      </Box>
+    </Text>
+  );
+};
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -47,7 +61,13 @@ export const Router: React.FC = () => {
           }
         />
         <Stack.Navigator>
-          <Stack.Screen name="quimicAR" component={HomeScreen} />
+          <Stack.Screen
+            name="quimicAR"
+            component={HomeScreen}
+            options={{
+              headerLeft: () => <LogoTitle />,
+            }}
+          />
           <Stack.Screen
             name="Atom"
             component={ARNavigator}
