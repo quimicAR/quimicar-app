@@ -1,4 +1,3 @@
-export default interface INeutron {
-  id: number;
-  position: number[];
-}
+import {IBaseParticle} from './';
+
+export default interface INeutron extends IBaseParticle {}

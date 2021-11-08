@@ -1,4 +1,4 @@
-export default interface IAtom {
+export default interface IElement {
   name: string;
   number: number;
   atomic_mass: number;

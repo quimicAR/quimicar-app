@@ -1,7 +1,7 @@
 import INeutron from './neutron';
 import IProton from './proton';
-import IEletron from './eletron';
 import IRing from './ring';
-import IAtom from './atom';
+import IElement from './element';
+import IBaseParticle from './base';
 
-export type {INeutron, IProton, IEletron, IRing, IAtom};
+export type {INeutron, IProton, IRing, IElement, IBaseParticle};

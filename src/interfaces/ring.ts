@@ -1,8 +1,7 @@
-import IEletron from './eletron';
-
 export default interface IRing {
-  id: number;
+  id: string;
   scale: number[];
-  eletrons: IEletron[];
+  numberOfEletrons: number;
   animation?: any;
+  rotation?: number[];
 }
