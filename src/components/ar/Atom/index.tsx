@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ViroAmbientLight,
@@ -9,108 +8,90 @@ import {
 } from '@viro-community/react-viro';
 import AtomRing from './AtomRing';
 import AtomNucleus from './AtomNucleus';
-import {INeutron, IProton, IRing} from '../../../interfaces';
-
-interface IAtom {
+import {IElement, INeutron, IProton, IRing} from '../../../interfaces';
+interface AtomARProps {
   protons: IProton[];
-  neutrons?: INeutron[];
-  rings?: IRing[];
-  text: {
-    name: string;
-    atomicNum: string;
-    atomicMass: string;
-  };
+  neutrons: INeutron[];
+  rings: IRing[];
+  atom: IElement;
 }
 
-const Atom = ({protons, neutrons, rings, text}: IAtom): JSX.Element => {
+const AtomAR = ({atom, neutrons, protons, rings}: AtomARProps): JSX.Element => {
+  const {shells} = atom;
+  const [numOfEletrons, setNumOfEletrons] = useState(0);
+
+  const calculateEletrons = () => {
+    const total = shells.reduce((a, b) => a + b);
+    setNumOfEletrons(total);
+  };
+
+  useEffect(() => {
+    calculateEletrons();
+  }, []);
+
   return (
-    <ViroNode>
-      <ViroNode>
-        <ViroAmbientLight color="#ffffff" />
-        <AtomNucleus protons={protons} neutrons={neutrons} />
-        {rings?.map((ring: IRing) => (
-          <AtomRing
-            key={ring.id}
-            scale={[0.04, 0.04, 0.04]}
-            eletrons={ring.eletrons}
-            animation={ring.animation}
-          />
-        ))}
-      </ViroNode>
-      {/* Create component to handle w/ Atom Text
-        OBS: Think about what information are relevant and nonrepetitive
-      */}
+    <>
       <ViroNode
-        animation={{
-          name: 'animateViro',
-          run: true,
-        }}
-        position={[0.05, 0, 0]}>
-        <ViroFlexView
-          rotation={[0, 0, 0]}
-          height={0.03}
-          width={0.05}
-          style={styles.card}>
-          <ViroFlexView style={styles.cardWrapper}>
-            <ViroText
-              width={0.1}
-              height={0.1}
-              text={text.name}
-              scale={[0.1, 0.1, 0]}
-              position={[0.1, 0.1, 0]}
-              rotation={[-90, 0, 0]}
-              style={styles.textStyle}
-            />
-            <ViroText
-              width={0.1}
-              height={0.1}
-              text={text.atomicMass}
-              scale={[0.05, 0.05, 0]}
-              position={[0.05, -0.05, 0]}
-              rotation={[-90, 0, 0]}
-              style={styles.subText}
-            />
-            <ViroText
-              width={0.1}
-              height={0.1}
-              text={text.atomicNum}
-              scale={[0.05, 0.05, 0]}
-              position={[0.01, -0.01, 0]}
-              rotation={[-90, 0, 0]}
-              style={styles.subText}
-            />
-          </ViroFlexView>
+        dragType="FixedToPlane"
+        dragPlane={{
+          planePoint: [0, -1, 0],
+          planeNormal: [0, 1, 0],
+          maxDistance: 5,
+        }}>
+        <ViroNode>
+          <ViroAmbientLight color="#ffffff" />
+          <AtomNucleus protons={protons} neutrons={neutrons} />
+          {rings?.map(
+            ({id, scale, numberOfEletrons, animation, rotation}: IRing) => (
+              <AtomRing
+                key={id}
+                scale={scale}
+                numberOfEletrons={numberOfEletrons}
+                animation={animation}
+                rotation={rotation}
+              />
+            ),
+          )}
+        </ViroNode>
+        {/* Create component to handle w/ Atom Text
+        OBS: Think about what information are relevant and nonrepetitive */}
+      </ViroNode>
+      <ViroNode position={[-0.01, 0.01, 0.05]}>
+        <ViroFlexView rotation={[-90, 0, 0]} style={styles.card}>
+          <ViroText
+            text={`E=${numOfEletrons}`}
+            color="rgb(232,80,62)"
+            scale={[0.09, 0.09, 0]}
+            style={styles.text}
+          />
+          <ViroText
+            text={`P=${protons.length}`}
+            color="rgb(20,115,230)"
+            scale={[0.09, 0.09, 0]}
+            style={styles.text}
+          />
+          <ViroText
+            text={`N=${neutrons.length}`}
+            color="rgb(252,194,22)"
+            scale={[0.09, 0.09, 0]}
+            style={styles.text}
+          />
         </ViroFlexView>
       </ViroNode>
-    </ViroNode>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  textStyle: {
-    flex: 0.5,
+  text: {
+    fontSize: 12,
     fontFamily: 'Roboto',
-    fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'top',
-    textAlign: 'left',
-    fontWeight: 'bold',
+    fontWeight: '500',
+    marginHorizontal: 15,
   },
   card: {
-    flexDirection: 'column',
-  },
-  cardWrapper: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    padding: 0.001,
-    flex: 0.5,
-  },
-  subText: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    flex: 0.5,
   },
 });
 
-export default Atom;
+export default AtomAR;
