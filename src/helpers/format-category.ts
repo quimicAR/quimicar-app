@@ -31,4 +31,6 @@ export type Category =
   | 'transitionMetals'
   | 'lanthanoids'
   | 'actinoids'
-  | 'nonMetal';
+  | 'nonMetal'
+  | 'metalloid'
+  | 'metalloids';
