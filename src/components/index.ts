@@ -1,6 +1,7 @@
-import {Search} from './quimicar/Search';
-import {AtomsList} from './quimicar/AtomsList';
-import {FamilyFilter} from './quimicar/FamilyFilter';
-import {Atom} from './quimicar/AtomsList/Atom';
+import {Search} from './ui/Search';
+import {AtomsList} from './ui/AtomsList';
+import {FamilyFilter} from './ui/FamilyFilter';
+import {Atom} from './ui/AtomsList/Atom';
+import {Alert} from './ui/Alert';
 
-export {Search, AtomsList, FamilyFilter, Atom};
+export {Search, AtomsList, FamilyFilter, Atom, Alert};

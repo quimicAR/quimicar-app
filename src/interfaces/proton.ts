@@ -1,4 +1,3 @@
-export default interface IProton {
-  id: number;
-  position: number[];
-}
+import {IBaseParticle} from './';
+
+export default interface IProton extends IBaseParticle {}

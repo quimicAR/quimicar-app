@@ -1,211 +1,107 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {useEffect, useState} from 'react';
-import {
-  ViroARScene,
-  ViroARImageMarker,
-  ViroARTrackingTargets,
-  ViroAnimations,
-} from '@viro-community/react-viro';
+import React, {useCallback, useEffect, useState} from 'react';
+import {ViroARScene, ViroARImageMarker} from '@viro-community/react-viro';
 import {AtomAR} from '../../components/ar';
-import {IAtom, IProton, IRing} from '../../interfaces';
-
-interface IAtomSceneProps {
-  atom: IAtom;
+import {IElement, INeutron, IProton, IRing} from '../../interfaces';
+import uuid from 'react-native-uuid';
+import '../../config/viro-ar';
+interface AtomSceneProps {
+  atom: IElement;
 }
 
-interface IEnergeticLevel {
-  id: number;
-  name: string;
-  maxElectrons: number;
-}
+const AtomScene: React.FC<AtomSceneProps> = ({atom}): JSX.Element => {
+  const [neutrons, setNeutrons] = useState<INeutron[]>([]);
+  const [protons, setProtons] = useState<IProton[]>([]);
+  const [rings, setRings] = useState<IRing[]>([]);
 
-/**
- * source -> ['https://sciencing.com/calculate-charge-ion-5955179.html', 'https://www.quora.com/What-is-the-formula-for-finding-the-number-of-shells-of-a-given-atomic-number#:~:text=an%20outer%20shell-,The%20chemical%20properties%20of%20the%20atom%20can%20determine%20by%20the,in%20the%20outer%20most%20shell%20.&text=For%20example%20if%20the%20shell,1)%5E2%3D2%20.']
- *
- * 1 - Method to calculate number of AtomRings
- * 2 - Eletrons and Protons = Atomic Number
- * 3 - Neutrons = round(Atomic Mass) - Atomic Number
- * 4 - To calculate number of AtomRings we need to know the max number of Electrons per Ring,
- *     to do this we need to do 2.n^2. Where (n) is the Ring number
- */
+  const {number: atomicNumber, shells, name, atomic_mass: atomicMass} = atom;
 
-/**
- * Idea to Algorithm that calculate the AtomRing (Eletronic Configuration)
- * 1 - Get the Atomic Number
- * 2 - Calculate the number of Electrons per Ring (To do so we can iterate from 1 to 7, for each ring calculate 2.n^2 and if any electron remain we run the iteration again trying to alocate those remaining Electrons)
- * 3 - return an object w/:
- * {
- *  rings: [
- *    {
- *     id: 1,
- *     name: 'K',
- *     electrons: [...] // in the first ring we can only have 2 electrons
- *    }
- *  ]
- * }
- */
+  const getRandomPosition = (min: number, max: number) =>
+    Math.random() * (max - min) + min;
 
-const AtomScene: React.FC<IAtomSceneProps> = ({atom}): JSX.Element => {
-  const protons: IProton[] = [
-    {
-      id: 1,
-      position: [0, 0, 0.02],
-    },
-  ];
-
-  const rings: IRing[] = [
-    {
-      id: 1,
-      scale: [0.04, 0.04, 0.04],
-      animation: {
-        name: 'loopRotate',
-        run: true,
-        loop: true,
-      },
-      eletrons: [
-        {
-          id: 1,
-          position: [-0.02, 0, 0.02],
+  const createRings = useCallback(() => {
+    let baseScale: number = 0.01;
+    const ringsArray = shells.map((numOfEletrons: number, index: number) => {
+      baseScale += numOfEletrons >= 8 ? 0.002 : 0.004;
+      return {
+        id: uuid.v4().toString(),
+        scale: [baseScale, baseScale, 0.01],
+        animation: {
+          name: index % 2 === 0 ? 'loopRotateY' : 'loopRotateZ',
+          run: true,
+          loop: true,
+          interruptible: true,
         },
-      ],
-    },
-  ];
+        rotation: index % 2 !== 0 ? [30, 0, 0] : [90, 0, 0],
+        numberOfEletrons: numOfEletrons,
+      };
+    });
+    setRings(ringsArray);
+  }, [shells]);
 
-  const calculateAtomRings = (): any => {
-    const energeticLevels: IEnergeticLevel[] = [
-      {
-        id: 1,
-        name: 'K',
-        maxElectrons: 2,
-      },
-      {
-        id: 2,
-        name: 'L',
-        maxElectrons: 8,
-      },
-      {
-        id: 3,
-        name: 'M',
-        maxElectrons: 18,
-      },
-      {
-        id: 4,
-        name: 'N',
-        maxElectrons: 32,
-      },
-      {
-        id: 5,
-        name: 'O',
-        maxElectrons: 32,
-      },
-      {
-        id: 6,
-        name: 'P',
-        maxElectrons: 18,
-      },
-      {
-        id: 7,
-        name: 'Q',
-        maxElectrons: 8,
-      },
-    ];
-    const energeticSubLevels: IEnergeticLevel[] = [
-      {
-        id: 0,
-        name: 's',
-        maxElectrons: 2,
-      },
-      {
-        id: 1,
-        name: 'p',
-        maxElectrons: 6,
-      },
-      {
-        id: 2,
-        name: 'd',
-        maxElectrons: 10,
-      },
-      {
-        id: 3,
-        name: 'f',
-        maxElectrons: 14,
-      },
-    ];
-  };
+  const createProtons = useCallback(() => {
+    const protonsArray: IProton[] = [];
+    for (let i = 1; i <= atomicNumber; i++) {
+      protonsArray.push({
+        id: uuid.v4().toString(),
+        scale:
+          atomicNumber === 1 ? [0.003, 0.003, 0.003] : [0.0012, 0.0012, 0.0012],
+        position:
+          atomicNumber > 1
+            ? [
+                getRandomPosition(-0.005, 0.005),
+                getRandomPosition(0.005, -0.005),
+                0.02,
+              ]
+            : [0, 0, 0.02],
+      });
+    }
+    setProtons(protonsArray);
+  }, [protons, atomicNumber]);
+
+  const createNeutrons = useCallback(() => {
+    // Neutrons = Mass Atomic - Atomic Number
+    const numberOfNeutrons = Math.round(atomicMass - atomicNumber);
+    const neutronsArray: INeutron[] = [];
+
+    for (let i = 1; i <= numberOfNeutrons; i++) {
+      neutronsArray.push({
+        id: uuid.v4().toString(),
+        position:
+          numberOfNeutrons > 1
+            ? [
+                getRandomPosition(0.005, -0.005),
+                getRandomPosition(-0.005, 0.005),
+                0.02,
+              ]
+            : [0, 0, 0.02],
+      });
+    }
+
+    setNeutrons(neutronsArray);
+  }, [atomicMass, atomicNumber, neutrons]);
 
   useEffect(() => {
-    calculateAtomRings();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    createNeutrons();
+    createProtons();
+    createRings();
+  }, []);
+
+  useEffect(() => {
+    console.log(name, atomicNumber, shells);
   }, []);
 
   return (
     <ViroARScene>
-      <ViroARImageMarker target={'hydrogen'}>
+      <ViroARImageMarker target={`${atom.number.toString()}`}>
         <AtomAR
-          rings={rings}
+          atom={atom}
+          neutrons={neutrons}
           protons={protons}
-          text={{
-            name: atom.name,
-            atomicMass: atom.atomicMass,
-            atomicNum: atom.atomicNumber,
-          }}
+          rings={rings}
         />
       </ViroARImageMarker>
     </ViroARScene>
   );
 };
 
-ViroAnimations.registerAnimations({
-  loopRotate: {
-    properties: {
-      rotateY: '+=40',
-    },
-    duration: 500,
-  },
-  animateViro: {
-    properties: {
-      positionZ: 0.02,
-      opacity: 1.0,
-    },
-    easing: 'Bounce',
-    duration: 500,
-  },
-});
-
-ViroARTrackingTargets.createTargets({
-  hydrogen: {
-    source: require('./res/hydrogen.jpg'),
-    orientation: 'Up',
-    physicalWidth: 0.1,
-  },
-});
-
 export default AtomScene;
-
-// let remainingElectrons = true; // flag to validate if we alocate all electrons
-
-// // let electrons = [];
-// // let ringsAux: any = [];
-// for (
-//   let ringNumber = 1;
-//   ringNumber <= 7 && remainingElectrons;
-//   ringNumber++
-// ) {
-//   const maxElectronsPerRing = 2 * ringNumber ** 2; // calculate max electrons per ring
-
-//   electronsCount -= maxElectronsPerRing; // subtract the possible electrons for the specific ring
-
-//   // if the number of electronsCount is not positive,
-//   // it means we alocate all the electrons in a Ring, so we can break iteration
-//   if (electronsCount <= 0) {
-//     console.log('Electrons remaining: ', electronsCount);
-//     remainingElectrons = false;
-//   } else {
-//     // if not
-//     console.log(
-//       `Max Electrons in Ring(${ringNumber}): `,
-//       maxElectronsPerRing,
-//     );
-//     console.log('Electrons remaining: ', electronsCount);
-//   }
-// }
