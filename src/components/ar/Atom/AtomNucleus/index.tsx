@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import {ViroNode} from '@viro-community/react-viro';
 import {SphereAR} from '../..';
@@ -13,22 +12,28 @@ const AtomNucleus: React.FC<IAtomNucleusProps> = ({neutrons, protons}) => {
   return (
     <ViroNode>
       {/* Atom nucleus */}
-      <SphereAR scale={[0.02, 0.02, 0.02]} opacity={0.2} materials={['atom']} />
+      <SphereAR scale={[0.01, 0.01, 0.01]} opacity={0.4} materials={['atom']} />
+      <SphereAR scale={[0.03, 0.03, 0.03]} opacity={0.2} materials={['atom']} />
       {/* Atom Protons */}
-      {protons.map((proton: IProton) => (
+      {protons.map(({id, position, scale}: IProton) => (
         <SphereAR
-          key={proton.id}
-          position={proton.position}
-          scale={[0.004, 0.004, 0.004]}
+          key={id}
+          position={position}
+          scale={scale ?? [0.0012, 0.0012, 0.0012]}
           materials={['proton']}
+          physicsBody={{
+            type: 'Static',
+            mass: 0,
+            shape: {type: 'Sphere', params: [0.5]},
+          }}
         />
       ))}
       {/* Atom Neutrons */}
-      {neutrons?.map((neutron: INeutron) => (
+      {neutrons?.map(({id, position, scale}: INeutron) => (
         <SphereAR
-          key={neutron.id}
-          position={neutron.position}
-          scale={[0.004, 0.004, 0.004]}
+          key={id}
+          position={position}
+          scale={scale ?? [0.0012, 0.0012, 0.0012]}
           materials={['neutron']}
         />
       ))}
