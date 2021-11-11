@@ -9,13 +9,14 @@ interface ISphereProps {
   materials: string[];
   animation?: any;
 }
-const Sphere = ({
+const Sphere: React.FC<ISphereProps & Record<string, any>> = ({
   materials,
   position,
   rotation,
   scale,
   opacity,
   animation,
+  ...otherProps
 }: ISphereProps): JSX.Element => {
   return (
     <ViroSphere
@@ -25,12 +26,8 @@ const Sphere = ({
       materials={materials}
       rotation={rotation}
       animation={animation}
-      dragType="FixedToWorld"
-      physicsBody={{
-        type: 'Static',
-        mass: 0,
-        shape: {type: 'Sphere', params: [0.5]},
-      }}
+      dragType="FixedToPlane"
+      {...otherProps}
     />
   );
 };
