@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import {ViroARSceneNavigator} from '@viro-community/react-viro';
 import {RouteProp, useRoute, useNavigation} from '@react-navigation/native';
-import {IAtom} from '../../interfaces';
+import {IElement} from '../../interfaces';
 import AtomScene from '../AtomScene';
 
 type ParamsList = {
   ARNavigator: {
-    atomData: IAtom;
+    atomData: IElement;
   };
 };
 
