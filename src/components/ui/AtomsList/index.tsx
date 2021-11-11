@@ -1,24 +1,17 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import {FlatList} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Atom} from './Atom';
-import {IAtom} from '../../../interfaces';
+import {IElement} from '../../../interfaces';
 import {AtomListContainer} from './styles';
-import {getAllElements} from '../../../services/elements/get-all';
 
 const ITEM_HEIGHT = 119;
-export const AtomsList: React.FC = () => {
-  const [atomsData, setAtomsData] = useState<IAtom[]>([]);
-  const navigation = useNavigation();
+interface AtomsListProps {
+  data: IElement[];
+}
 
-  const loadElements = () => {
-    getAllElements()
-      .then(({data}) => {
-        const filtered = data.filter(atom => atom.enabled);
-        setAtomsData(filtered);
-      })
-      .catch((error: any) => console.log(error));
-  };
+export const AtomsList: React.FC<AtomsListProps> = ({data}) => {
+  const navigation = useNavigation();
 
   const renderItem = useCallback(
     ({item}) => (
@@ -35,7 +28,7 @@ export const AtomsList: React.FC = () => {
   const keyExtractor = useCallback(({number}) => number.toString(), []);
 
   const getItemLayout = useCallback(
-    (data, index) => ({
+    (item, index) => ({
       length: ITEM_HEIGHT,
       offset: ITEM_HEIGHT * index,
       index,
@@ -43,14 +36,10 @@ export const AtomsList: React.FC = () => {
     [],
   );
 
-  useEffect(() => {
-    loadElements();
-  }, []);
-
   return (
     <AtomListContainer>
-      <FlatList<IAtom>
-        data={atomsData}
+      <FlatList<IElement>
+        data={data}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         getItemLayout={getItemLayout}
