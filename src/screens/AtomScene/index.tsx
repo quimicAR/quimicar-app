@@ -13,7 +13,7 @@ const AtomScene: React.FC<AtomSceneProps> = ({atom}): JSX.Element => {
   const [protons, setProtons] = useState<IProton[]>([]);
   const [rings, setRings] = useState<IRing[]>([]);
 
-  const {number: atomicNumber, shells, name, atomic_mass: atomicMass} = atom;
+  const {number: atomicNumber, shells, atomic_mass: atomicMass} = atom;
 
   const getRandomPosition = (min: number, max: number) =>
     Math.random() * (max - min) + min;
@@ -86,13 +86,9 @@ const AtomScene: React.FC<AtomSceneProps> = ({atom}): JSX.Element => {
     createRings();
   }, []);
 
-  useEffect(() => {
-    console.log(name, atomicNumber, shells);
-  }, []);
-
   return (
     <ViroARScene>
-      <ViroARImageMarker target={`${atom.number.toString()}`}>
+      <ViroARImageMarker target={atom.number.toString()}>
         <AtomAR
           atom={atom}
           neutrons={neutrons}
