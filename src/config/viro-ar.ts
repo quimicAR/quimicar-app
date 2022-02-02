@@ -42,47 +42,103 @@ export const buildObjPath = (numberOfEletrons: number) => {
       return require('./res/17/17.obj');
     case 18:
       return require('./res/18/18.obj');
+    case 19:
+      return require('./res/19/19.obj');
+    case 20:
+      return require('./res/20/20.obj');
+    case 21:
+      return require('./res/21/21.obj');
+    case 22:
+      return require('./res/22/22.obj');
+    case 23:
+      return require('./res/23/23.obj');
+    case 24:
+      return require('./res/24/24.obj');
+    case 25:
+      return require('./res/25/25.obj');
+    case 26:
+      return require('./res/26/26.obj');
+    case 27:
+      return require('./res/27/27.obj');
+    case 28:
+      return require('./res/28/28.obj');
+    case 29:
+      return require('./res/29/29.obj');
+    case 30:
+      return require('./res/30/30.obj');
+    case 31:
+      return require('./res/31/31.obj');
+    case 32:
+      return require('./res/32/32.obj');
   }
 };
 
 export const buildResourcePath = (numberOfEletrons: number) => {
   switch (numberOfEletrons) {
     case 1:
-      return require('./res/1/1.mtl');
+      return require('./res/1/1-materials.mtl');
     case 2:
-      return require('./res/2/2.mtl');
+      return require('./res/2/2-materials.mtl');
     case 3:
-      return require('./res/3/3.mtl');
+      return require('./res/3/3-materials.mtl');
     case 4:
-      return require('./res/4/4.mtl');
+      return require('./res/4/4-materials.mtl');
     case 5:
-      return require('./res/5/5.mtl');
+      return require('./res/5/5-materials.mtl');
     case 6:
-      return require('./res/6/6.mtl');
+      return require('./res/6/6-materials.mtl');
     case 7:
-      return require('./res/7/7.mtl');
+      return require('./res/7/7-materials.mtl');
     case 8:
-      return require('./res/8/8.mtl');
+      return require('./res/8/8-materials.mtl');
     case 9:
-      return require('./res/9/9.mtl');
+      return require('./res/9/9-materials.mtl');
     case 10:
-      return require('./res/10/10.mtl');
+      return require('./res/10/10-materials.mtl');
     case 11:
-      return require('./res/11/11.mtl');
+      return require('./res/11/11-materials.mtl');
     case 12:
-      return require('./res/12/12.mtl');
+      return require('./res/12/12-materials.mtl');
     case 13:
-      return require('./res/13/13.mtl');
+      return require('./res/13/13-materials.mtl');
     case 14:
-      return require('./res/14/14.mtl');
+      return require('./res/14/14-materials.mtl');
     case 15:
-      return require('./res/15/15.mtl');
+      return require('./res/15/15-materials.mtl');
     case 16:
-      return require('./res/16/16.mtl');
+      return require('./res/16/16-materials.mtl');
     case 17:
-      return require('./res/17/17.mtl');
+      return require('./res/17/17-materials.mtl');
     case 18:
-      return require('./res/18/18.mtl');
+      return require('./res/18/18-materials.mtl');
+    case 19:
+      return require('./res/19/19-materials.mtl');
+    case 20:
+      return require('./res/20/20-materials.mtl');
+    case 21:
+      return require('./res/21/21-materials.mtl');
+    case 22:
+      return require('./res/22/22-materials.mtl');
+    case 23:
+      return require('./res/23/23-materials.mtl');
+    case 24:
+      return require('./res/24/24-materials.mtl');
+    case 25:
+      return require('./res/25/25-materials.mtl');
+    case 26:
+      return require('./res/26/26-materials.mtl');
+    case 27:
+      return require('./res/27/27-materials.mtl');
+    case 28:
+      return require('./res/28/28-materials.mtl');
+    case 29:
+      return require('./res/29/29-materials.mtl');
+    case 30:
+      return require('./res/30/30-materials.mtl');
+    case 31:
+      return require('./res/31/31-materials.mtl');
+    case 32:
+      return require('./res/32/32-materials.mtl');
   }
 };
 

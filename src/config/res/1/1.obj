@@ -1,6 +1,6 @@
 # Blender v2.93.5 OBJ File: 'torus-base.blend'
 # www.blender.org
-mtllib 1.mtl
+mtllib 1-materials.mtl
 o Electron_Mball
 v -1.069830 -0.026858 0.076434
 v -1.069830 0.026858 0.076434

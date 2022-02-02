@@ -21,7 +21,8 @@ const AtomScene: React.FC<AtomSceneProps> = ({atom}): JSX.Element => {
   const createRings = useCallback(() => {
     let baseScale: number = 0.01;
     const ringsArray = shells.map((numOfEletrons: number, index: number) => {
-      baseScale += numOfEletrons >= 8 ? 0.002 : 0.004;
+      baseScale +=
+        numOfEletrons >= 18 ? 0.001 : numOfEletrons >= 8 ? 0.002 : 0.003;
       return {
         id: uuid.v4().toString(),
         scale: [baseScale, baseScale, 0.01],
